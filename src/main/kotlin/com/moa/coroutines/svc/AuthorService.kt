@@ -7,6 +7,8 @@ import com.moa.coroutines.interfaces.IAuthorService
 import com.moa.coroutines.models.base.Author
 import com.moa.coroutines.models.forbidden
 import com.moa.coroutines.repos.AuthorRepo
+import com.moa.coroutines.repos.BookRepo
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
 import java.rmi.ServerError
 
@@ -14,7 +16,8 @@ import java.rmi.ServerError
  * @author omar Dec 11, 2020
  */
 class AuthorService(
-    private val authorRepo: AuthorRepo
+    private val authorRepo: AuthorRepo,
+    private val bookRepo: BookRepo
 ) : IAuthorService {
 
 
@@ -24,9 +27,9 @@ class AuthorService(
 
     // #Summary method used to check if the author id is valid
     @Throws(ServerError::class)
-    override suspend fun validateId(id: String): Author {
+    override suspend fun validateId(id: String): Author = run {
         // #Fetch the author from the database by the given id
-        return authorRepo.findById(id) ?:
+        authorRepo.findById(id) ?:
         // #This block will only execute if there is no data for the given id
         throw invalid("author id", id).forbidden
 
@@ -58,10 +61,15 @@ class AuthorService(
         // #validate the given id
         validateId(this)
 
-        // todo check if the author already have any books before deleting the author
-
         // #Delete the author
-        authorRepo.deleteById(this)
+        coroutineScope {
+            authorRepo.deleteById(id)
+        }
+
+        // #Delete all books related to the author
+        coroutineScope {
+            bookRepo.deleteBookByAuthorId(id)
+        }
 
         // #Return the response
         successful(value = this)

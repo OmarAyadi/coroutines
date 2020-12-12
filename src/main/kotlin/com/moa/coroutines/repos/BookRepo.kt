@@ -11,4 +11,6 @@ interface BookRepo : CoroutineCrudRepository<Book, String> {
     suspend fun findByName(name: String): Book?
 
     suspend fun findByAuthorId(authorId: String): Flow<Book>
+
+    suspend fun deleteBookByAuthorId(authorId: String)
 }
