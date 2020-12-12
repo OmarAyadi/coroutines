@@ -3,6 +3,7 @@ package com.moa.coroutines.handlers
 import com.moa.coroutines.dto.AuthorDto
 import com.moa.coroutines.global.authorId
 import com.moa.coroutines.global.handle
+import com.moa.coroutines.global.handleFlow
 import com.moa.coroutines.interfaces.IAuthorService
 import com.moa.coroutines.interfaces.IBookService
 import org.springframework.web.reactive.function.server.ServerRequest
@@ -82,7 +83,7 @@ class AuthorHandler(
     // #Summary return all authors
     // #Request {json object}
     // #Success 200 {server object} Response
-    suspend fun getAllAuthors(request: ServerRequest) = handle {
+    suspend fun getAllAuthors(request: ServerRequest) = handleFlow {
         authorService.getAll()
     }
 
@@ -90,7 +91,7 @@ class AuthorHandler(
     // #Summary return all author books
     // #Request {json object}
     // #Success 200 {server object} Response
-    suspend fun getAuthorBooks(request: ServerRequest) = handle {
+    suspend fun getAuthorBooks(request: ServerRequest) = handleFlow {
         // #Fetch author id from path parameters
         request.pathVariable(authorId)
             // #Fetch target author

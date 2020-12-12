@@ -1,11 +1,17 @@
 package com.moa.coroutines.global
 
 import com.moa.coroutines.models.Response
+import com.moa.coroutines.models.getServerResponse
 import com.moa.coroutines.models.res
 import com.moa.coroutines.models.serverError
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.toCollection
 import org.springframework.http.MediaType.APPLICATION_JSON
+import org.springframework.web.reactive.function.server.ServerResponse
 import org.springframework.web.reactive.function.server.ServerResponse.ok
 import org.springframework.web.reactive.function.server.ServerResponse.status
+import org.springframework.web.reactive.function.server.bodyAndAwait
 import org.springframework.web.reactive.function.server.bodyValueAndAwait
 
 /**
@@ -16,54 +22,53 @@ import org.springframework.web.reactive.function.server.bodyValueAndAwait
  * Global Variables
  */
 
-val authorId = "authorId"
+const val authorId = "authorId"
 
-val bookId = "bookId"
+const val bookId = "bookId"
 
 
 /**
  * Global Functions
  */
 // #Summary : method used to execute a concurrent job and catch any occurring error
-suspend inline fun handle(job: () -> Any) = run {
-    try {
+suspend inline fun handle(job: () -> Any): ServerResponse {
+    return try {
         // #Create a Successful Server Response
         // -> When no Server error has occurred
         ok()
             .contentType(APPLICATION_JSON)
             .bodyValueAndAwait(job().res)
     } catch (ex: Exception) {
-        // #Convert the exception to the respective
-        ex.serverError
-            // #Scope : we use run scope to reduce variables initialization
-            // instead of creating a serverError instance
-            // -> we scope the instance and call the instance with this
-            // -> PS inside `run` we can ignore `this` and call attributes
-            // its attributes and methods directly
-            .run {
-                // #Convert the server error to a valid server response
-                status(
-                    httpStatus
+        ex.getServerResponse()
+    }
+}
+
+// #Summary : method used to execute a concurrent job that return a flow and catch any occurring error
+// -> Handling flows are bit different than normal return since we need to `collect` the flow
+// and convert it into the respective result instead of normal conversion
+suspend inline fun <reified T> handleFlow(job: () -> Flow<T>): ServerResponse {
+    return try {
+        // #Create a Successful Server Response
+        // -> When no Server error has occurred
+        mutableListOf<T>().run {
+            ok()
+                .contentType(APPLICATION_JSON)
+                .bodyValueAndAwait(
+                    // #Execute the job
+                    job()
+                        // #Collect and map the flow to a collection list
+                        .toCollection(this)
+                        // #Convert the list to @Response::class
+                        .res
                 )
-                    // #Set the content type as JSON, since @Response
-                    // is a JSON representation of server return
-                    .contentType(
-                        APPLICATION_JSON
-                    )
-                    // #Update response body
-                    // -> we await the body since the response is based on a
-                    // coroutine scope
-                    .bodyValueAndAwait(
-                        Response<Any>(
-                            error = message
-                        )
-                    )
-            }
+        }
+    } catch (ex: Exception) {
+        ex.getServerResponse()
     }
 }
 
 
 // #Summary : extension method used to return a String from a nullable String
 // -> the method take a default value that will replace the null String
-inline fun String?.value(defaultValue: String = "") = this ?: defaultValue
+fun String?.value(defaultValue: String = "") = this ?: defaultValue
 

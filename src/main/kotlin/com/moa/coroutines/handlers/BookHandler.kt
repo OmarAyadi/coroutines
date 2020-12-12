@@ -3,6 +3,7 @@ package com.moa.coroutines.handlers
 import com.moa.coroutines.dto.BookDto
 import com.moa.coroutines.global.bookId
 import com.moa.coroutines.global.handle
+import com.moa.coroutines.global.handleFlow
 import com.moa.coroutines.interfaces.IBookService
 import org.springframework.web.reactive.function.server.ServerRequest
 import org.springframework.web.reactive.function.server.awaitBody
@@ -79,7 +80,7 @@ class BookHandler(private val bookService: IBookService) {
     // #Summary return all books
     // #Request {json object}
     // #Success 200 {server object} Response
-    suspend fun getAllBooks(request: ServerRequest) = handle {
+    suspend fun getAllBooks(request: ServerRequest) = handleFlow {
         bookService.getAll()
     }
 }

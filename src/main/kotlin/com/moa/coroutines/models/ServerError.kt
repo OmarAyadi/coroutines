@@ -2,6 +2,9 @@ package com.moa.coroutines.models
 
 import org.springframework.http.HttpStatus
 import org.springframework.http.HttpStatus.*
+import org.springframework.http.MediaType
+import org.springframework.web.reactive.function.server.ServerResponse
+import org.springframework.web.reactive.function.server.bodyValueAndAwait
 import org.springframework.web.server.ResponseStatusException
 
 /**
@@ -33,18 +36,6 @@ class ServerError(
     ResponseStatusException(httpStatus, message)
 
 
-// `serverError` is a representation of Exception conversion
-// -> this value will return a ServerError from any exception that occurred on server
-// Exp :
-// ServerError occurred because of an invalid id -> serverError will return the same instance
-// NullPointerException occurred -> it will be converted into ServerResponse (<exception-message>,INTERNAL_SERVER_ERROR)
-val Exception.serverError: ServerError
-    get() = when (this) {
-        is ServerError -> this
-        is ResponseStatusException -> ServerError(message, status)
-        else -> ServerError(message ?: "an error has occurred", INTERNAL_SERVER_ERROR)
-    }
-
 // #Extention values that define ServerError types
 val String.badRequest: ServerError
     get() = ServerError(this, BAD_REQUEST)
@@ -71,4 +62,47 @@ fun forbidden(
 ) {
     if (condition)
         throw message.forbidden
+}
+
+// `serverError` is a representation of Exception conversion
+// -> this value will return a ServerError from any exception that occurred on server
+// Exp :
+// ServerError occurred because of an invalid id -> serverError will return the same instance
+// NullPointerException occurred -> it will be converted into ServerResponse (<exception-message>,INTERNAL_SERVER_ERROR)
+val Exception.serverError: ServerError
+    get() = when (this) {
+        is ServerError -> this
+        is ResponseStatusException -> ServerError(message, status)
+        else -> ServerError(message ?: "an error has occurred", INTERNAL_SERVER_ERROR)
+    }
+
+
+// #Summart : method used to extract ServerResponse from any occurred exception
+suspend fun Exception.getServerResponse(): ServerResponse = run {
+    // #Convert the exception to the respective
+    this.serverError
+        // #Scope : we use run scope to reduce variables initialization
+        // instead of creating a serverError instance
+        // -> we scope the instance and call the instance with this
+        // -> PS inside `run` we can ignore `this` and call attributes
+        // its attributes and methods directly
+        .run {
+            // #Convert the server error to a valid server response
+            ServerResponse.status(
+                httpStatus
+            )
+                // #Set the content type as JSON, since @Response
+                // is a JSON representation of server return
+                .contentType(
+                    MediaType.APPLICATION_JSON
+                )
+                // #Update response body
+                // -> we await the body since the response is based on a
+                // coroutine scope
+                .bodyValueAndAwait(
+                    Response<Any>(
+                        error = message
+                    )
+                )
+        }
 }
