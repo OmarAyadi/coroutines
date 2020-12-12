@@ -11,9 +11,9 @@
 <!-- PROJECT LOGO -->
 <div align="center">
     <div style="display:flex; flex-direction: row; justify-content:space-around;">
-        <img style="width:50px; height:50px" src="static/images/kotlin-icon.svg" alt="Logo">
+        <img style="width:100px; height:100px;" src="static/images/kotlin_logo.jpeg" alt="Logo">
         <p>+</p>
-        <img style="width:50px; height:50px" src="static/images/spring.svg" alt="Logo">
+        <img style="width:100px; height:100px;" src="static/images/spring-framework-icon.png" alt="Logo">
     </div>
 
 <h3 align="center">Coroutines</h3>
