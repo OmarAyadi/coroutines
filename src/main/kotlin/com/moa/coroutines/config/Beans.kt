@@ -2,9 +2,9 @@ package com.moa.coroutines.config
 
 import com.moa.coroutines.handlers.AuthorHandler
 import com.moa.coroutines.handlers.BookHandler
-import com.moa.coroutines.http_routers.authorRouter
-import com.moa.coroutines.http_routers.bookRouter
-import com.moa.coroutines.http_routers.publicRouter
+import com.moa.coroutines.routers.authorRouter
+import com.moa.coroutines.routers.bookRouter
+import com.moa.coroutines.routers.publicRouter
 import com.moa.coroutines.svc.AuthorService
 import com.moa.coroutines.svc.BookService
 import org.springframework.context.support.beans
