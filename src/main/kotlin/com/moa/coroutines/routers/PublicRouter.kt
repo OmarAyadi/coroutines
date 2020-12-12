@@ -1,4 +1,4 @@
-package com.moa.coroutines.http_routers
+package com.moa.coroutines.routers
 
 import com.moa.coroutines.models.res
 import org.springframework.web.reactive.function.server.ServerResponse

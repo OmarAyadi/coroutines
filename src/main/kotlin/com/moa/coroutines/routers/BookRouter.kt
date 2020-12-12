@@ -1,4 +1,4 @@
-package com.moa.coroutines.http_routers
+package com.moa.coroutines.routers
 
 import com.moa.coroutines.global.bookId
 import com.moa.coroutines.handlers.BookHandler
