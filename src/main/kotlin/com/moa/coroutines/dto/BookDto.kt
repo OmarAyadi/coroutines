@@ -15,7 +15,7 @@ class BookDto(
 ) {
     // #Method used to validate the author
     @Throws(ServerError::class)
-    inline fun isValid() {
+    fun isValid() {
         // #Validate author information
         // -> Scope method used to reduce ref calls
         this.run {
@@ -26,12 +26,13 @@ class BookDto(
 
     // #Method used to convert a BookSto instance to a valid
     // Book instance
-    inline fun convert(): Book {
+    fun convert(): Book {
         // #Ref the dto and return a new Author instance
         return this.run {
             Book(
-                name = name.value(),
-                nbPages = nbPages
+                authorId.value(),
+                name.value(),
+                nbPages
             )
         }
     }

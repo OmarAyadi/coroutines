@@ -7,21 +7,21 @@ package com.moa.coroutines.global
  */
 
 
-inline fun invalid(
+fun invalid(
     fieldName: String,
     value: Any
 ): String {
     return "invalid $fieldName : $value"
 }
 
-inline fun successful(
+fun successful(
     type: String = "deleted",
     value: Any
 ): String {
     return "$value $type successfully"
 }
 
-inline fun exists(
+fun exists(
     fieldName: String,
     value: Any
 ): String {

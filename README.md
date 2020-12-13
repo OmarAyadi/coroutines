@@ -53,7 +53,6 @@
     * [Prerequisites](#prerequisites)
     * [Run](#Run)
 * [Folder Structure](#folder-structure)
-* [Usage](#usage)
 * [Roadmap](#roadmap)
 * [Contributing](#contributing)
 

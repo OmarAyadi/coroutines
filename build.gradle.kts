@@ -37,6 +37,7 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
     testImplementation("org.jetbrains.kotlin:kotlin-test")
     testImplementation("io.kotest:kotest-runner-junit5-jvm:4.3.0")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test")
     /* <-- Kotlin Dep */
 
     /* Extra Dep --> */
