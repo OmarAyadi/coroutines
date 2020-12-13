@@ -7,23 +7,12 @@ package com.moa.coroutines.global
  */
 
 
-fun invalid(
-    fieldName: String,
-    value: Any
-): String {
-    return "invalid $fieldName : $value"
-}
+fun invalid(fieldName: String, value: Any) = "invalid $fieldName : $value"
 
-fun successful(
-    type: String = "deleted",
-    value: Any
-): String {
-    return "$value $type successfully"
-}
+fun successful(type: String = "deleted", value: Any) = "$value $type successfully"
 
-fun exists(
-    fieldName: String,
-    value: Any
-): String {
-    return "$fieldName $value already exists"
-}
+fun exists(fieldName: String, value: Any) = "$fieldName $value already exists"
+
+fun cannotBeNull(fieldName: String) = "$fieldName cannot be null"
+
+fun cannotBeBlank(fieldName: String) = "$fieldName cannot be null or blank"

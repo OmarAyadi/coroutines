@@ -1,5 +1,6 @@
 package com.moa.coroutines.mocks
 
+import com.moa.coroutines.dto.BookDto
 import com.moa.coroutines.models.base.Book
 
 /**
@@ -11,3 +12,9 @@ fun mockBook(authorId: String = generateId) = Book(
     name = "mocked book",
     nbPages = 20
 )
+
+fun mockBookDto(
+    authorId: String? = null,
+    name: String? = "new book",
+    nbPages: Int = 2
+) = BookDto(authorId, name, nbPages)

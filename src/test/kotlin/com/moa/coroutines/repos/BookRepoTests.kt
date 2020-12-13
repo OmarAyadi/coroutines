@@ -1,11 +1,8 @@
 package com.moa.coroutines.repos
 
-import com.moa.coroutines.global.authorId
 import com.moa.coroutines.mocks.generateId
 import com.moa.coroutines.mocks.mockAuthor
 import com.moa.coroutines.mocks.mockBook
-import io.kotest.matchers.ints.shouldBeExactly
-import io.kotest.matchers.longs.shouldBeExactly
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
 import kotlinx.coroutines.Dispatchers
@@ -13,8 +10,6 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.test.TestCoroutineDispatcher
-import kotlinx.coroutines.test.runBlockingTest
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -51,7 +46,7 @@ class BookRepoTests @Autowired constructor(
     fun `testing find by name method`() {
         runBlocking {
             // #Validate empty repo
-            bookRepo.count() shouldBeExactly 0
+            bookRepo.count() shouldBe 0
 
             // #Create a book
             mockBook()
@@ -98,8 +93,8 @@ class BookRepoTests @Autowired constructor(
         runBlocking {
 
             // #Validate empty repos
-            bookRepo.count() shouldBeExactly 0
-            bookRepo.count() shouldBeExactly 0
+            bookRepo.count() shouldBe 0
+            bookRepo.count() shouldBe 0
 
             // #Prepare data
             // -> two authors
@@ -124,12 +119,12 @@ class BookRepoTests @Autowired constructor(
 
             launch(Dispatchers.IO) {
                 // #Check that we have 2 books for the first author
-                bookRepo.findByAuthorId(author1.id).toList().size shouldBeExactly 2
+                bookRepo.findByAuthorId(author1.id).toList().size shouldBe 2
             }
 
             launch(Dispatchers.IO) {
                 // #Check that we have 1 books for the second author
-                bookRepo.findByAuthorId(author2.id).toList().size shouldBeExactly 1
+                bookRepo.findByAuthorId(author2.id).toList().size shouldBe 1
             }
         }
     }

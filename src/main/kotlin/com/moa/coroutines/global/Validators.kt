@@ -18,7 +18,7 @@ import com.moa.coroutines.models.badRequest
 fun Any?.isNotNull(fieldName: String) {
     badRequest(
         this == null,
-        "$fieldName cannot be null"
+        cannotBeNull(fieldName)
     )
 }
 
@@ -37,7 +37,7 @@ fun String?.isNotBlank(fieldName: String) {
     this?.let {
         badRequest(
             isBlank(),
-            "$fieldName cannot be blank"
+            cannotBeBlank(fieldName)
         )
     }
 }

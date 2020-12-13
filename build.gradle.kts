@@ -46,6 +46,7 @@ dependencies {
     /* Test Dep --> */
     testImplementation("io.projectreactor:reactor-test")
     testImplementation("org.mockito:mockito-core:3.3.3")
+    testImplementation("io.mockk:mockk:1.10.3")
     /* <-- Test Dep */
 
 }

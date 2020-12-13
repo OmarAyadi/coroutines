@@ -6,9 +6,9 @@ import org.bson.types.ObjectId
  * @author omar Oct 23, 2020
  */
 
-const val invalidId = "invalid id"
+const val invalid = "invalid"
 
-const val invalidName = "invalid name"
+const val authorId = "valid author id for testing"
 
 val generateId : String
     get() = ObjectId().toString()
