@@ -15,7 +15,7 @@ class AuthorDto(
 ) {
     // #Method used to validate the author
     @Throws(ServerError::class)
-    inline fun isValid() {
+    fun isValid() {
         // #Validate author information
         // -> Scope method used to reduce ref calls
         this.run {
@@ -27,11 +27,10 @@ class AuthorDto(
 
     // #Method used to convert an AuthorDto instance to a valid
     // Author instance
-    inline fun convert(): Author {
+    fun convert(): Author {
         // #Ref the dto and return a new Author instance
         return this.run {
             Author(
-                null,
                 firstName.value(),
                 lastName.value(),
                 email.value()

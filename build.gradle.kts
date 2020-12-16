@@ -37,6 +37,7 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
     testImplementation("org.jetbrains.kotlin:kotlin-test")
     testImplementation("io.kotest:kotest-runner-junit5-jvm:4.3.0")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test")
     /* <-- Kotlin Dep */
 
     /* Extra Dep --> */
@@ -45,6 +46,7 @@ dependencies {
     /* Test Dep --> */
     testImplementation("io.projectreactor:reactor-test")
     testImplementation("org.mockito:mockito-core:3.3.3")
+    testImplementation("io.mockk:mockk:1.10.3")
     /* <-- Test Dep */
 
 }

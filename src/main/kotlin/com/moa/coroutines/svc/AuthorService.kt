@@ -32,7 +32,6 @@ class AuthorService(
         authorRepo.findById(id) ?:
         // #This block will only execute if there is no data for the given id
         throw invalid("author id", id).forbidden
-
     }
 
 

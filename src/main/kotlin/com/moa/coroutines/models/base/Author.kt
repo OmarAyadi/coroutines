@@ -1,5 +1,6 @@
 package com.moa.coroutines.models.base
 
+import org.springframework.data.annotation.Id
 import org.springframework.data.mongodb.core.mapping.Document
 import java.time.Instant
 
@@ -9,9 +10,12 @@ import java.time.Instant
 
 @Document("authors")
 class Author(
-    var id: String? = null,
     val firstName: String,
     val lastName: String,
     val email: String,
     val createdAt: Instant = Instant.now()
-)
+) {
+
+    @Id
+    lateinit var id: String
+}

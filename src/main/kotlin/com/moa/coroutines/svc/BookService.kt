@@ -63,16 +63,11 @@ class BookService(
             // #Convert the dto to the respective object
             convert()
         }
-        // #Fetch the author
+        // #FValidate the author
         authorService.validateId(
-            // #Value() is used directly since the `bookDto`
-            // is already validated
+            // #Value() is used directly since the `bookDto` is already validated
             bookDto.authorId.value()
-        ).run {
-
-            // #Update book author ref
-            book.author = this
-        }
+        )
 
         // #Save the book
         bookRepo.save(book)

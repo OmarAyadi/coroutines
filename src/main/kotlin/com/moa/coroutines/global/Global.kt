@@ -7,6 +7,7 @@ import com.moa.coroutines.models.serverError
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.toCollection
+import org.springframework.http.MediaType
 import org.springframework.http.MediaType.APPLICATION_JSON
 import org.springframework.web.reactive.function.server.ServerResponse
 import org.springframework.web.reactive.function.server.ServerResponse.ok
@@ -31,12 +32,12 @@ const val bookId = "bookId"
  * Global Functions
  */
 // #Summary : method used to execute a concurrent job and catch any occurring error
-suspend inline fun handle(job: () -> Any): ServerResponse {
+suspend inline fun handle(contentType: MediaType = APPLICATION_JSON, job: () -> Any): ServerResponse {
     return try {
         // #Create a Successful Server Response
         // -> When no Server error has occurred
         ok()
-            .contentType(APPLICATION_JSON)
+            .contentType(contentType)
             .bodyValueAndAwait(job().res)
     } catch (ex: Exception) {
         ex.getServerResponse()
@@ -46,13 +47,13 @@ suspend inline fun handle(job: () -> Any): ServerResponse {
 // #Summary : method used to execute a concurrent job that return a flow and catch any occurring error
 // -> Handling flows are bit different than normal return since we need to `collect` the flow
 // and convert it into the respective result instead of normal conversion
-suspend inline fun <reified T> handleFlow(job: () -> Flow<T>): ServerResponse {
+suspend inline fun <reified T> handleFlow(contentType: MediaType = APPLICATION_JSON, job: () -> Flow<T>): ServerResponse {
     return try {
         // #Create a Successful Server Response
         // -> When no Server error has occurred
         mutableListOf<T>().run {
             ok()
-                .contentType(APPLICATION_JSON)
+                .contentType(contentType)
                 .bodyValueAndAwait(
                     // #Execute the job
                     job()
